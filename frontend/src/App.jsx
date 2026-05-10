@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
-import { createUser, deleteUser, getUsers } from "./Services/userService";
+import {
+    createUser,
+    deleteUser,
+    getUsers,
+    updateUser,
+} from "./Services/userService";
 
 function App() {
     const [users, setUsers] = useState([]);
+    const [newEmail, setNewEmail] = useState("");
+    const [editingUserId, setEditingUserId] = useState(null);
+
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -53,6 +61,16 @@ function App() {
             setError(err.message);
         } finally {
             setSubmitting(false);
+        }
+    }
+    async function handleUpdate(id, email) {
+        try {
+            await updateUser(id, email);
+            const data = await getUsers();
+            setUsers(data);
+            setNewEmail("");
+        } catch (err) {
+            setError(err.message);
         }
     }
 
@@ -152,7 +170,67 @@ function App() {
                     {users.map((user) => (
                         <li key={user.id} style={{ marginBottom: 8 }}>
                             <strong>{user.name}</strong> - {user.email} -{" "}
-                            {user.role}{" "}
+                            {user.role}
+                            {editingUserId === user.id ? (
+                                <>
+                                    <input
+                                        style={{
+                                            marginLeft: 10,
+                                            background: "white",
+                                            color: "black",
+                                        }}
+                                        value={newEmail}
+                                        onChange={(e) =>
+                                            setNewEmail(e.target.value)
+                                        }
+                                    ></input>
+                                    <button
+                                        style={{
+                                            background: "white",
+                                            marginLeft: 8,
+                                            padding: "4px 8px",
+                                            border: "1px solid #2f9440",
+                                            borderRadius: 4,
+                                            color: "#0c4927",
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                            handleUpdate(user.id, newEmail)
+                                        }
+                                    >
+                                        Update
+                                    </button>
+                                    <button
+                                        style={{
+                                            background: "white",
+                                            marginLeft: 8,
+                                            padding: "4px 8px",
+                                            border: "1px solid #2f9440",
+                                            borderRadius: 4,
+                                            color: "#0c4927",
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={() => setEditingUserId(null)}
+                                    >
+                                        Hide Edit button
+                                    </button>
+                                </>
+                            ) : (
+                                <button
+                                    style={{
+                                        background: "white",
+                                        marginLeft: 8,
+                                        padding: "4px 8px",
+                                        border: "1px solid #2f9440",
+                                        borderRadius: 4,
+                                        color: "#0c4927",
+                                        cursor: "pointer",
+                                    }}
+                                    onClick={() => setEditingUserId(user.id)}
+                                >
+                                    ShowEdit
+                                </button>
+                            )}
                             <button
                                 onClick={() => handleDelete(user.id)}
                                 style={{

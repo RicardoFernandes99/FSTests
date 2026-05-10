@@ -34,3 +34,17 @@ export async function deleteUser(id) {
     }
     return res.json();
 }
+
+export async function updateUser(id, email) {
+    const res = await fetch(`${API_URL}/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+    });
+    if (!res.ok) {
+        throw new Error("Failed Update User");
+    }
+    return;
+}
