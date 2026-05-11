@@ -10,6 +10,12 @@ export default function Sidebar() {
                 <NavLink className="sidebar-link" to="/users">
                     User
                 </NavLink>
+                <NavLink className="sidebar-link" to="/register">
+                    Register
+                </NavLink>
+                <NavLink className="sidebar-link" to="/login">
+                    Login
+                </NavLink>
             </nav>
         </aside>
     );

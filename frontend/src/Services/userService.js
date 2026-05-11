@@ -3,7 +3,8 @@ const API_URL = "http://localhost:3000/users";
 export async function getUsers() {
     const res = await fetch(API_URL);
     if (!res.ok) {
-        throw new Error("Failed to fetch");
+        const error = await res.json().catch(() => null);
+        throw new Error(error?.message);
     }
 
     return res.json();
@@ -15,6 +16,7 @@ export async function createUser(body) {
         headers: {
             "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(body),
     });
 
@@ -28,6 +30,7 @@ export async function createUser(body) {
 export async function deleteUser(id) {
     const res = await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
+        credentials: "include",
     });
     if (!res.ok) {
         throw new Error("Failed to delete user");
@@ -41,6 +44,7 @@ export async function updateUser(id, email) {
         headers: {
             "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ email }),
     });
     if (!res.ok) {
