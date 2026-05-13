@@ -1,7 +1,9 @@
 const API_URL = "http://localhost:3000/users";
 
 export async function getUsers() {
-    const res = await fetch(API_URL);
+    const res = await fetch(API_URL, {
+        credentials: "include",
+    });
     if (!res.ok) {
         const error = await res.json().catch(() => null);
         throw new Error(error?.message);

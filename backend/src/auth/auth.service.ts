@@ -53,4 +53,25 @@ export class AuthService {
 
     return accessToken;
   }
+
+  async me(accessToken: string) {
+    if (!accessToken) {
+      throw new UnauthorizedException('No access token provided');
+    }
+    try {
+      const payload = await this.jwtService.verifyAsync(accessToken);
+      const user = await this.usersService.findById(payload.sub);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid access token');
+    }
+  }
 }

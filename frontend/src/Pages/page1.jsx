@@ -5,6 +5,8 @@ import {
     getUsers,
     updateUser,
 } from "../Services/userService";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function Page1() {
     const [users, setUsers] = useState([]);
@@ -102,30 +104,20 @@ export default function Page1() {
                     flexWrap: "wrap",
                 }}
             >
-                <input
+                <Input
                     name="name"
                     placeholder="Name"
                     value={form.name}
                     onChange={handleChange}
-                    style={{
-                        background: "white",
-                        padding: "8px 10px",
-                        border: "1px solid #ccc",
-                        borderRadius: 4,
-                    }}
+                    className="w-auto"
                 />
 
-                <input
+                <Input
                     name="email"
                     placeholder="Email"
                     value={form.email}
                     onChange={handleChange}
-                    style={{
-                        background: "white",
-                        padding: "8px 10px",
-                        border: "1px solid #ccc",
-                        borderRadius: 4,
-                    }}
+                    className="w-auto"
                 />
 
                 <select
@@ -144,19 +136,9 @@ export default function Page1() {
                     <option value="Admin">Admin</option>
                 </select>
 
-                <button
-                    type="submit"
-                    disabled={submitting}
-                    style={{
-                        background: "white",
-                        padding: "8px 12px",
-                        border: "1px solid #222",
-                        borderRadius: 4,
-                        cursor: "pointer",
-                    }}
-                >
+                <Button type="submit" disabled={submitting}>
                     {submitting ? "Saving..." : "Create User"}
-                </button>
+                </Button>
             </form>
 
             {error && <p style={{ color: "red" }}>{error}</p>}
@@ -173,78 +155,50 @@ export default function Page1() {
                             {user.role}
                             {editingUserId === user.id ? (
                                 <>
-                                    <input
-                                        style={{
-                                            marginLeft: 10,
-                                            background: "white",
-                                            color: "black",
-                                        }}
+                                    <Input
+                                        className="ml-2.5 inline-flex w-48"
                                         value={newEmail}
                                         onChange={(e) =>
                                             setNewEmail(e.target.value)
                                         }
-                                    ></input>
-                                    <button
-                                        style={{
-                                            background: "white",
-                                            marginLeft: 8,
-                                            padding: "4px 8px",
-                                            border: "1px solid #2f9440",
-                                            borderRadius: 4,
-                                            color: "#0c4927",
-                                            cursor: "pointer",
-                                        }}
+                                    />
+                                    <Button
+                                        className="ml-2"
+                                        size="sm"
+                                        variant="outline"
                                         onClick={() =>
                                             handleUpdate(user.id, newEmail)
                                         }
                                     >
                                         Update
-                                    </button>
-                                    <button
-                                        style={{
-                                            background: "white",
-                                            marginLeft: 8,
-                                            padding: "4px 8px",
-                                            border: "1px solid #2f9440",
-                                            borderRadius: 4,
-                                            color: "#0c4927",
-                                            cursor: "pointer",
-                                        }}
+                                    </Button>
+                                    <Button
+                                        className="ml-2"
+                                        size="sm"
+                                        variant="outline"
                                         onClick={() => setEditingUserId(null)}
                                     >
                                         Hide Edit button
-                                    </button>
+                                    </Button>
                                 </>
                             ) : (
-                                <button
-                                    style={{
-                                        background: "white",
-                                        marginLeft: 8,
-                                        padding: "4px 8px",
-                                        border: "1px solid #2f9440",
-                                        borderRadius: 4,
-                                        color: "#0c4927",
-                                        cursor: "pointer",
-                                    }}
+                                <Button
+                                    className="ml-2"
+                                    size="sm"
+                                    variant="outline"
                                     onClick={() => setEditingUserId(user.id)}
                                 >
                                     ShowEdit
-                                </button>
+                                </Button>
                             )}
-                            <button
+                            <Button
+                                className="ml-2"
+                                size="sm"
+                                variant="destructive"
                                 onClick={() => handleDelete(user.id)}
-                                style={{
-                                    background: "white",
-                                    marginLeft: 8,
-                                    padding: "4px 8px",
-                                    border: "1px solid #b91c1c",
-                                    borderRadius: 4,
-                                    color: "#b91c1c",
-                                    cursor: "pointer",
-                                }}
                             >
                                 Delete
-                            </button>
+                            </Button>
                         </li>
                     ))}
                 </ul>

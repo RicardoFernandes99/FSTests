@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { register } from "../Services/authService";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function RegisterPage() {
-    const [users, setUsers] = useState([]);
-    const [newEmail, setNewEmail] = useState("");
-    const [editingUserId, setEditingUserId] = useState(null);
     const [error, setError] = useState("");
 
     const [form, setForm] = useState({
@@ -13,7 +12,6 @@ export default function RegisterPage() {
         password: "",
         role: "User",
     });
-    const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
 
     function handleChange(e) {
@@ -31,8 +29,7 @@ export default function RegisterPage() {
         setError("");
 
         try {
-            const created = await register(form);
-            setUsers((prev) => [created, ...prev]);
+            await register(form);
             setForm({
                 name: "",
                 email: "",
@@ -49,43 +46,25 @@ export default function RegisterPage() {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input
+                <Input
                     name="name"
                     placeholder="Name"
                     value={form.name}
                     onChange={handleChange}
-                    style={{
-                        background: "white",
-                        padding: "8px 10px",
-                        border: "1px solid #ccc",
-                        borderRadius: 4,
-                    }}
                 />
 
-                <input
+                <Input
                     name="email"
                     placeholder="Email"
                     value={form.email}
                     onChange={handleChange}
-                    style={{
-                        background: "white",
-                        padding: "8px 10px",
-                        border: "1px solid #ccc",
-                        borderRadius: 4,
-                    }}
                 />
-                <input
+                <Input
                     type="password"
                     name="password"
                     placeholder="password"
                     value={form.password}
                     onChange={handleChange}
-                    style={{
-                        background: "white",
-                        padding: "8px 10px",
-                        border: "1px solid #ccc",
-                        borderRadius: 4,
-                    }}
                 />
 
                 <select
@@ -104,18 +83,9 @@ export default function RegisterPage() {
                     <option value="Admin">Admin</option>
                 </select>
 
-                <button
-                    type="submit"
-                    style={{
-                        background: "white",
-                        padding: "8px 12px",
-                        border: "1px solid #222",
-                        borderRadius: 4,
-                        cursor: "pointer",
-                    }}
-                >
-                    Sign UP
-                </button>
+                <Button type="submit" disabled={submitting}>
+                    {submitting ? "Signing up..." : "Sign UP"}
+                </Button>
             </form>
             {error && <p style={{ color: "red" }}>{error}</p>}
         </div>

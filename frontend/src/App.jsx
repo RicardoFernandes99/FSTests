@@ -5,21 +5,53 @@ import LoginPage from "./Pages/login";
 import MainPage from "./Pages/mainPage";
 import Sidebar from "./component/sidebar";
 import RegisterPage from "./Pages/register";
-
+import ProtectedRoute from "./component/ProtectedRoute";
+import GuestRoute from "./component/GuestRoute";
+import { AuthProvider } from "./auth/AuthContext";
 function App() {
     return (
         <BrowserRouter>
-            <div className="app-layout">
-                <Sidebar />
-                <main>
-                    <Routes>
-                        <Route path="/" element={<MainPage />} />
-                        <Route path="/users" element={<Page1 />} />
-                        <Route path="/register" element={<RegisterPage />} />
-                        <Route path="/login" element={<LoginPage />} />
-                    </Routes>
-                </main>
-            </div>
+            <AuthProvider>
+                <div className="app-layout">
+                    <Sidebar />
+                    <main>
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={
+                                    <ProtectedRoute>
+                                        <MainPage />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/register"
+                                element={
+                                    <GuestRoute>
+                                        <RegisterPage />
+                                    </GuestRoute>
+                                }
+                            />
+                            <Route
+                                path="/users"
+                                element={
+                                    <ProtectedRoute>
+                                        <Page1 />
+                                    </ProtectedRoute>
+                                }
+                            />
+                            <Route
+                                path="/login"
+                                element={
+                                    <GuestRoute>
+                                        <LoginPage />
+                                    </GuestRoute>
+                                }
+                            />
+                        </Routes>
+                    </main>
+                </div>
+            </AuthProvider>
         </BrowserRouter>
     );
 }

@@ -1,27 +1,24 @@
 import { useState } from "react";
-
-export default function mainPage() {
+import { Button } from "@/components/ui/button";
+import { useAuth } from "../auth/useAuth";
+export default function MainPage() {
     const [showDiv, setShowDiv] = useState(false);
-
+    const { user, loading } = useAuth();
     return (
         <>
             <div>
                 <h1 background="white">This is The main Page</h1>
             </div>
-            <button
-                style={{
-                    marginLeft: "10px",
-                    color: "black",
-                    background: "#edeff3",
-                    border: "1px solid white",
-                    padding: "8px 12px",
-                    borderRadius: 6,
-                    cursor: "pointer",
-                }}
+            <p>
+                {user?.email} - {user?.role}
+            </p>
+            <Button
+                className="ml-2.5"
+                variant="secondary"
                 onClick={() => setShowDiv((prev) => !prev)}
             >
                 Toggle
-            </button>
+            </Button>
             {showDiv ? (
                 <div> This is the false random div</div>
             ) : (

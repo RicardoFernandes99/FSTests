@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
-import { login, register } from "../Services/authService";
+import { useState } from "react";
+import { login } from "../Services/authService";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/useAuth";
 
 export default function LoginPage() {
     const [error, setError] = useState("");
+    const navigate = useNavigate();
+    const { checkAuth } = useAuth();
 
     const [form, setForm] = useState({
         email: "",
         password: "",
     });
-    const [loading, setLoading] = useState(true);
-
     function handleChange(e) {
         const { name, value } = e.target;
 
@@ -24,58 +28,35 @@ export default function LoginPage() {
         setError("");
 
         try {
-            const created = await login(form);
+            await login(form);
+            await checkAuth();
+            navigate("/");
             setForm({
                 email: "",
                 password: "",
             });
         } catch (err) {
             setError(err.message);
-        } finally {
-            setLoading(false);
         }
     }
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input
+                <Input
                     name="email"
                     placeholder="Email"
                     value={form.email}
                     onChange={handleChange}
-                    style={{
-                        background: "white",
-                        padding: "8px 10px",
-                        border: "1px solid #ccc",
-                        borderRadius: 4,
-                    }}
                 />
-                <input
+                <Input
                     type="password"
                     name="password"
                     placeholder="password"
                     value={form.password}
                     onChange={handleChange}
-                    style={{
-                        background: "white",
-                        padding: "8px 10px",
-                        border: "1px solid #ccc",
-                        borderRadius: 4,
-                    }}
                 />
-                <button
-                    type="submit"
-                    style={{
-                        background: "white",
-                        padding: "8px 12px",
-                        border: "1px solid #222",
-                        borderRadius: 4,
-                        cursor: "pointer",
-                    }}
-                >
-                    Sign In
-                </button>
+                <Button type="submit">Sign In</Button>
             </form>
             {error && <p style={{ color: "red" }}>{error}</p>}
         </div>

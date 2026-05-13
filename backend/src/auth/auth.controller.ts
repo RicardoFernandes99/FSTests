@@ -38,4 +38,23 @@ export class AuthController {
 
     return { message: 'Logged in' };
   }
+
+  @Post('logout')
+  async logout(@Res({ passthrough: true }) res: Response) {
+    if (!res.req.cookies['accessToken']) {
+      return { message: 'Already logged out' };
+    }
+    res.clearCookie('accessToken', {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: false,
+    });
+    return { message: 'Logged out' };
+  }
+
+  @Get('me')
+  async me(@Res({ passthrough: true }) res: Response) {
+    const accessToken = res.req.cookies['accessToken'];
+    return this.authService.me(accessToken);
+  }
 }
