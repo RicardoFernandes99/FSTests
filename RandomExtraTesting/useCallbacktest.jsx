@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 
-function ProductItem({ product, onToggleFavorite }) {
+function ProductItemBase({ product, onToggleFavorite }) {
     console.log("Rendering product:", product.name);
 
     return (
@@ -15,9 +15,9 @@ function ProductItem({ product, onToggleFavorite }) {
         </div>
     );
 }
-const ProductItem = React.memo(ProductItem);
+const ProductItem = React.memo(ProductItemBase);
 
-function ProductsPage() {
+export default function ProductsPage() {
     const [products, setProducts] = useState([
         { id: 1, name: "Keyboard", isFavorite: false },
         { id: 2, name: "Mouse", isFavorite: false },
