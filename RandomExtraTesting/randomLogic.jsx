@@ -13,6 +13,11 @@ function ProductsPage() {
         );
     }, [products, search]); // Memo the function and do not recalculate unless dependencies changes. Products or Search value
 
+    const filter = (search) => {
+        return products.filter((p) =>
+            p.name.toLowerCase().includes(search.toLowerCase()),
+        );
+    };
     const updateFavorite = (id) =>
         setProducts((prev) => {
             prev.map((p) =>

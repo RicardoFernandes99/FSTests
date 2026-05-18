@@ -25,13 +25,24 @@ const productsMock = [
     { id: 3, name: "Monitor", price: 200, favorite: false },
 ];
 
-function ProductFileter({ search }) {
+function ProductFilter({ search }) {
     const [products, setProducts] = useState(productsMock);
 
-    const filteredProducts = products.filter((p) =>
-        p.name.toLowerCase().includes(search.toLowerCase()),
+    const filteredProducts = useMemo(
+        () =>
+            products.filter((p) =>
+                p.name.toLowerCase().includes(search.toLowerCase()),
+            ),
+        [products, search],
     );
 
+    const filteredProducts = useMemo(
+        () =>
+            products.filter((p) =>
+                p.name.toLowerCase().includes(search.toLowerCase()),
+            ),
+        [products, search],
+    );
     return (
         <>
             {filteredProducts.map((p) => (

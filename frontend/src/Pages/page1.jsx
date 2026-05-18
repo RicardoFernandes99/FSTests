@@ -142,7 +142,6 @@ export default function Page1() {
             </form>
 
             {error && <p style={{ color: "red" }}>{error}</p>}
-
             {loading ? (
                 <p>Loading users...</p>
             ) : users.length === 0 ? (
